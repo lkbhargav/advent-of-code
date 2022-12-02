@@ -1,20 +1,34 @@
 use crate::prelude::*;
+use md5::{self, Digest};
+use std::str;
 
-pub struct Day4 {}
+pub struct Day4 {
+    inp: String,
+}
 
 impl Questions for Day4 {
     fn init(&mut self, file: &str) -> Result<(), Box<dyn std::error::Error>> {
         let contents = read_from_file(file);
 
-        // TODO: file parsing logic goes here
+        self.inp = contents.trim().to_string();
 
         Ok(())
     }
 
     fn question_one(&mut self) -> Result<String, Box<dyn std::error::Error>> {
-        let mut ans = String::new();
+        let mut step = 0;
 
-        // TODO: your logic goes in here...
+        loop {
+            step += 1;
+
+            let hash = md5::compute(format!("{}{}", self.inp, step));
+
+            if Day4::confirm_padding(hash, "00000") {
+                break;
+            }
+        }
+
+        let ans = step.to_string();
 
         println!("\nAnswer to first question is {}!\n", ans.green());
 
@@ -22,9 +36,19 @@ impl Questions for Day4 {
     }
 
     fn question_two(&mut self) -> Result<String, Box<dyn std::error::Error>> {
-        let mut ans = String::new();
+        let mut step = 0;
 
-        // TODO: your logic goes in here...
+        loop {
+            step += 1;
+
+            let hash = md5::compute(format!("{}{}", self.inp, step));
+
+            if Day4::confirm_padding(hash, "000000") {
+                break;
+            }
+        }
+
+        let ans = step.to_string();
 
         println!("\nAnswer to second question is {}!\n", ans.green());
 
@@ -34,7 +58,13 @@ impl Questions for Day4 {
 
 impl Day4 {
     pub fn new() -> Day4 {
-        Day4 {}
+        Day4 {
+            inp: String::new()
+        }
+    }
+
+    pub fn confirm_padding(v: Digest, padding: &str) -> bool {
+        format!("{:x}", v).starts_with(padding)
     }
 }
 
@@ -44,7 +74,7 @@ mod tests {
 
     #[test]
     fn q1_works() {
-        let expected_q1 = String::from("");
+        let expected_q1 = String::from("609043");
 
         let mut day4 = Day4::new();
 
@@ -58,7 +88,7 @@ mod tests {
 
     #[test]
     fn q2_works() {
-        let expected_q2 = String::from("");
+        let expected_q2 = String::from("6742839");
 
         let mut day4 = Day4::new();
 
