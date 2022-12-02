@@ -1,6 +1,6 @@
 use advent_of_code::{
     prelude::*,
-    y_2015::{d_1::Day1 as y15d1, d_2::Day2 as y15d2},
+    y_2015::{d_1::Day1 as y15d1, d_2::Day2 as y15d2, d_3::Day3 as y15d3},
     y_2022::{d_1::Day1 as y22d1, d_2::Day2 as y22d2},
 };
 
@@ -24,7 +24,11 @@ fn main() {
 
     println!("\nfetched inputs from `{}` file!\n", file.yellow());
 
-    let mut y15: Vec<Box<dyn Questions>> = vec![Box::new(y15d1::new()), Box::new(y15d2::new())];
+    let mut y15: Vec<Box<dyn Questions>> = vec![
+        Box::new(y15d1::new()),
+        Box::new(y15d2::new()),
+        Box::new(y15d3::new()),
+    ];
 
     let mut y22: Vec<Box<dyn Questions>> = vec![Box::new(y22d1::new()), Box::new(y22d2::new())];
 

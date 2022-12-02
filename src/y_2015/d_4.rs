@@ -1,4 +1,3 @@
-
 use crate::prelude::*;
 
 pub struct Day4 {}
@@ -13,7 +12,7 @@ impl Questions for Day4 {
     }
 
     fn question_one(&mut self) -> Result<String, Box<dyn std::error::Error>> {
-        let mut ans= String::new();
+        let mut ans = String::new();
 
         // TODO: your logic goes in here...
 
@@ -23,7 +22,7 @@ impl Questions for Day4 {
     }
 
     fn question_two(&mut self) -> Result<String, Box<dyn std::error::Error>> {
-        let mut ans= String::new();
+        let mut ans = String::new();
 
         // TODO: your logic goes in here...
 
@@ -60,7 +59,7 @@ mod tests {
     #[test]
     fn q2_works() {
         let expected_q2 = String::from("");
-        
+
         let mut day4 = Day4::new();
 
         day4.init("inputs/2015/4a.txt")
@@ -71,4 +70,3 @@ mod tests {
         assert_eq!(expected_q2, q2);
     }
 }
-        

@@ -8,31 +8,33 @@ pub struct Dimensions {
 
 impl Dimensions {
     pub fn new(l: u32, w: u32, h: u32) -> Dimensions {
-        Dimensions{
-            l, w, h
-        }
+        Dimensions { l, w, h }
     }
 }
 
 pub struct Day2 {
-    inp: Vec<Dimensions>
+    inp: Vec<Dimensions>,
 }
 
 impl Questions for Day2 {
     fn init(&mut self, file: &str) -> Result<(), Box<dyn std::error::Error>> {
         let contents = read_from_file(file);
 
-        let values = contents.lines().map(|v| {
-            let v = v.trim()
-            .split("x")
-            .filter(|v| !v.is_empty())
+        let values = contents
+            .lines()
             .map(|v| {
-                v.parse::<u32>()
-                    .expect("error trying to convert string to int")
+                let v = v
+                    .trim()
+                    .split("x")
+                    .filter(|v| !v.is_empty())
+                    .map(|v| {
+                        v.parse::<u32>()
+                            .expect("error trying to convert string to int")
+                    })
+                    .collect::<Vec<_>>();
+                Dimensions::new(v[0], v[1], v[2])
             })
-            .collect::<Vec<_>>();
-            Dimensions::new(v[0], v[1], v[2])
-        }).collect::<Vec<Dimensions>>();
+            .collect::<Vec<Dimensions>>();
 
         self.inp = values;
 

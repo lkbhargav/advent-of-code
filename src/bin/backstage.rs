@@ -86,7 +86,7 @@ fn main() {
         "Do you want to input `test` data?",
         "Enter the `test` data?",
         true,
-        true
+        true,
     );
 
     get_test_data(
@@ -95,7 +95,7 @@ fn main() {
         "Do you want to input `real` data?",
         "Enter the `real` data?",
         true,
-        false
+        false,
     );
 }
 
@@ -139,13 +139,22 @@ fn is_the_file_empty(file_name: &str) -> bool {
     contents.lines().count() == 0
 }
 
-fn get_test_data(year: &str, day: &str, confirmation_prompt_question: &str, prompt_question: &str, default_confirmation_prompt: bool, test_data: bool) {
-    let test_data_suffix = if test_data {"a"} else {""};
+#[inline(always)]
+fn get_test_data(
+    year: &str,
+    day: &str,
+    confirmation_prompt_question: &str,
+    prompt_question: &str,
+    default_confirmation_prompt: bool,
+    test_data: bool,
+) {
+    let test_data_suffix = if test_data { "a" } else { "" };
 
     let file_path = format!("inputs/{year}/{day}{test_data_suffix}.txt",);
-    
+
     if !Path::new(&file_path).exists() {
-        let test_data_confirmation = confirm(confirmation_prompt_question, default_confirmation_prompt);
+        let test_data_confirmation =
+            confirm(confirmation_prompt_question, default_confirmation_prompt);
 
         if test_data_confirmation {
             // Prompt for sample input
@@ -220,7 +229,7 @@ mod tests {{
         let mut day{day} = Day{day}::new();
 
         day{day}.init("inputs/{year}/{day}a.txt")
-            .expect("error trying to init day{{}}");
+            .expect("error trying to init day{day}");
 
         let q1 = day{day}.question_one().unwrap();
 
@@ -234,7 +243,7 @@ mod tests {{
         let mut day{day} = Day{day}::new();
 
         day{day}.init("inputs/{year}/{day}a.txt")
-            .expect("error trying to init day{{day}}");
+            .expect("error trying to init day{day}");
 
         let q2 = day{day}.question_two().unwrap();
 
