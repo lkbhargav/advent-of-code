@@ -1,17 +1,29 @@
 use crate::prelude::*;
 
-pub struct Day2 {
+pub struct Dimensions {
     l: u32,
     w: u32,
     h: u32,
+}
+
+impl Dimensions {
+    pub fn new(l: u32, w: u32, h: u32) -> Dimensions {
+        Dimensions{
+            l, w, h
+        }
+    }
+}
+
+pub struct Day2 {
+    inp: Vec<Dimensions>
 }
 
 impl Questions for Day2 {
     fn init(&mut self, file: &str) -> Result<(), Box<dyn std::error::Error>> {
         let contents = read_from_file(file);
 
-        let values = contents
-            .trim()
+        let values = contents.lines().map(|v| {
+            let v = v.trim()
             .split("x")
             .filter(|v| !v.is_empty())
             .map(|v| {
@@ -19,17 +31,10 @@ impl Questions for Day2 {
                     .expect("error trying to convert string to int")
             })
             .collect::<Vec<_>>();
+            Dimensions::new(v[0], v[1], v[2])
+        }).collect::<Vec<Dimensions>>();
 
-        if values.len() != 3 {
-            panic!(
-                "expected the length of values to be 3 but found {}",
-                values.len()
-            );
-        }
-
-        self.l = values[0];
-        self.w = values[1];
-        self.h = values[2];
+        self.inp = values;
 
         Ok(())
     }
@@ -37,9 +42,14 @@ impl Questions for Day2 {
     fn question_one(&mut self) -> Result<String, Box<dyn std::error::Error>> {
         let mut ans = String::new();
 
-        let (least_area, total) = &self.get_dimensions();
+        let mut res = 0;
 
-        ans = (least_area + total).to_string();
+        for d in &self.inp {
+            let (least_area, total) = Day2::get_dimensions(d);
+            res = least_area + total + res;
+        }
+
+        ans = res.to_string();
 
         println!("\nAnswer to first question is {}!\n", ans.green());
 
@@ -49,9 +59,14 @@ impl Questions for Day2 {
     fn question_two(&mut self) -> Result<String, Box<dyn std::error::Error>> {
         let mut ans = String::new();
 
-        let (wrap, bow) = &self.get_ribbon_for_wrap_and_bow();
+        let mut res = 0;
 
-        ans = (wrap + bow).to_string();
+        for d in &self.inp {
+            let (wrap, bow) = Day2::get_ribbon_for_wrap_and_bow(d);
+            res = wrap + bow + res;
+        }
+
+        ans = res.to_string();
 
         println!("\nAnswer to second question is {}!\n", ans.green());
 
@@ -61,11 +76,11 @@ impl Questions for Day2 {
 
 impl Day2 {
     pub fn new() -> Day2 {
-        Day2 { l: 0, w: 0, h: 0 }
+        Day2 { inp: vec![] }
     }
 
-    pub fn get_dimensions(&self) -> (usize, usize) {
-        let dimensions = vec![&self.l * &self.h, &self.h * &self.w, &self.w * &self.l];
+    pub fn get_dimensions(d: &Dimensions) -> (usize, usize) {
+        let dimensions = vec![d.l * d.h, d.h * d.w, d.w * d.l];
 
         let least_value = *dimensions
             .iter()
@@ -77,8 +92,8 @@ impl Day2 {
         (least_value, area)
     }
 
-    pub fn get_ribbon_for_wrap_and_bow(&self) -> (usize, usize) {
-        let mut dimensions = vec![&self.l, &self.h, &self.w];
+    pub fn get_ribbon_for_wrap_and_bow(d: &Dimensions) -> (usize, usize) {
+        let mut dimensions = vec![d.l, d.h, d.w];
         let mut wrap = 0;
         let mut bow = 1;
 

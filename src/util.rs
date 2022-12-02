@@ -1,5 +1,5 @@
 use colored::*;
-use dialoguer::{theme::ColorfulTheme, Input, Select};
+use dialoguer::{theme::ColorfulTheme, Confirm, Input, Select};
 use std::fs;
 
 pub fn prompt_select<T>(q: &str, items: &Vec<T>) -> usize
@@ -20,6 +20,14 @@ pub fn prompt(q: &str, default: &str) -> String {
         .default(default.to_string())
         .interact_text()
         .expect("error trying to get input")
+}
+
+pub fn confirm(q: &str, default: bool) -> bool {
+    Confirm::with_theme(&ColorfulTheme::default())
+        .with_prompt(q)
+        .default(default)
+        .interact()
+        .expect("error trying to confirm")
 }
 
 pub fn prompt_with_validation<'a>(

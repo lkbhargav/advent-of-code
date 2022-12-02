@@ -80,22 +80,23 @@ fn main() {
         append_to_file(day_file, text_to_append);
     }
 
-    let file_path = format!("{file_path}/{day}a.txt");
-    if !Path::new(&file_path).exists() {
-        // Prompt for sample input
-        let test_contents = prompt("Enter the test data?", "");
+    get_test_data(
+        &year,
+        &day,
+        "Do you want to input `test` data?",
+        "Enter the `test` data?",
+        true,
+        true
+    );
 
-        if !test_contents.is_empty() {
-            let file_path = format!("inputs/{}", year);
-            if !Path::new(&file_path).exists() {
-                fs::create_dir_all(&file_path).expect("something went wrong creating a directory");
-            }
-
-            let file_path = format!("{file_path}/{day}a.txt");
-            File::create(&file_path).expect("error trying to create a file");
-            append_to_file(&file_path, &test_contents);
-        }
-    }
+    get_test_data(
+        &year,
+        &day,
+        "Do you want to input `real` data?",
+        "Enter the `real` data?",
+        true,
+        false
+    );
 }
 
 fn get_current_dir() -> String {
@@ -138,6 +139,33 @@ fn is_the_file_empty(file_name: &str) -> bool {
     contents.lines().count() == 0
 }
 
+fn get_test_data(year: &str, day: &str, confirmation_prompt_question: &str, prompt_question: &str, default_confirmation_prompt: bool, test_data: bool) {
+    let test_data_suffix = if test_data {"a"} else {""};
+
+    let file_path = format!("inputs/{year}/{day}{test_data_suffix}.txt",);
+    
+    if !Path::new(&file_path).exists() {
+        let test_data_confirmation = confirm(confirmation_prompt_question, default_confirmation_prompt);
+
+        if test_data_confirmation {
+            // Prompt for sample input
+            let test_contents = prompt(prompt_question, "");
+
+            if !test_contents.is_empty() {
+                let file_path = format!("inputs/{}", year);
+                if !Path::new(&file_path).exists() {
+                    fs::create_dir_all(&file_path)
+                        .expect("something went wrong creating a directory");
+                }
+
+                let file_path = format!("{file_path}/{day}{test_data_suffix}.txt");
+                File::create(&file_path).expect("error trying to create a file");
+                append_to_file(&file_path, &test_contents);
+            }
+        }
+    }
+}
+
 fn get_template_solution(day: &str, year: &str) -> String {
     format!(
         r#"
@@ -146,6 +174,14 @@ use crate::prelude::*;
 pub struct Day{day} {{}}
 
 impl Questions for Day{day} {{
+    fn init(&mut self, file: &str) -> Result<(), Box<dyn std::error::Error>> {{
+        let contents = read_from_file(file);
+
+        // TODO: file parsing logic goes here
+
+        Ok(())
+    }}
+
     fn question_one(&mut self) -> Result<String, Box<dyn std::error::Error>> {{
         let mut ans= String::new();
 
@@ -168,11 +204,7 @@ impl Questions for Day{day} {{
 }}
 
 impl Day{day} {{
-    pub fn new(file: &str) -> Day{day} {{
-        let contents = read_from_file(file);
-
-        // file parsing logic goes here
-
+    pub fn new() -> Day{day} {{
         Day{day} {{}}
     }}
 }}
@@ -185,7 +217,10 @@ mod tests {{
     fn q1_works() {{
         let expected_q1 = String::from("");
 
-        let mut day{day} = Day{day}::new("inputs/{year}/{day}a.txt");
+        let mut day{day} = Day{day}::new();
+
+        day{day}.init("inputs/{year}/{day}a.txt")
+            .expect("error trying to init day{{}}");
 
         let q1 = day{day}.question_one().unwrap();
 
@@ -196,7 +231,10 @@ mod tests {{
     fn q2_works() {{
         let expected_q2 = String::from("");
         
-        let mut day{day} = Day{day}::new("inputs/{year}/{day}a.txt");
+        let mut day{day} = Day{day}::new();
+
+        day{day}.init("inputs/{year}/{day}a.txt")
+            .expect("error trying to init day{{day}}");
 
         let q2 = day{day}.question_two().unwrap();
 
