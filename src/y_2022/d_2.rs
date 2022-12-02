@@ -31,8 +31,6 @@ pub struct Day2 {
 
 impl Questions for Day2 {
     fn question_one(&mut self) -> Result<String, Box<dyn std::error::Error>> {
-        let mut ans = String::new();
-
         let mut score = 0;
 
         for fight in &self.inp {
@@ -40,7 +38,7 @@ impl Questions for Day2 {
             score += res as u32 + fight.1 as u32;
         }
 
-        ans = score.to_string();
+        let ans = score.to_string();
 
         println!("\nAnswer to first question is {}!\n", ans.green());
 
@@ -48,8 +46,6 @@ impl Questions for Day2 {
     }
 
     fn question_two(&mut self) -> Result<String, Box<dyn std::error::Error>> {
-        let mut ans = String::new();
-
         let mut score = 0;
 
         for fight in &self.inp {
@@ -57,7 +53,7 @@ impl Questions for Day2 {
             score += res as u32 + Day2::what_should_i_play(fight.clone().0, res) as u32;
         }
 
-        ans = score.to_string();
+        let ans = score.to_string();
 
         println!("\nAnswer to second question is {}!\n", ans.green());
 

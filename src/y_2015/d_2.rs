@@ -42,8 +42,6 @@ impl Questions for Day2 {
     }
 
     fn question_one(&mut self) -> Result<String, Box<dyn std::error::Error>> {
-        let mut ans = String::new();
-
         let mut res = 0;
 
         for d in &self.inp {
@@ -51,7 +49,7 @@ impl Questions for Day2 {
             res = least_area + total + res;
         }
 
-        ans = res.to_string();
+        let ans = res.to_string();
 
         println!("\nAnswer to first question is {}!\n", ans.green());
 
@@ -59,8 +57,6 @@ impl Questions for Day2 {
     }
 
     fn question_two(&mut self) -> Result<String, Box<dyn std::error::Error>> {
-        let mut ans = String::new();
-
         let mut res = 0;
 
         for d in &self.inp {
@@ -68,7 +64,7 @@ impl Questions for Day2 {
             res = wrap + bow + res;
         }
 
-        ans = res.to_string();
+        let ans = res.to_string();
 
         println!("\nAnswer to second question is {}!\n", ans.green());
 

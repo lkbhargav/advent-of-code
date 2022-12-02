@@ -88,8 +88,6 @@ impl Questions for Day3 {
     }
 
     fn question_one(&mut self) -> Result<String, Box<dyn std::error::Error>> {
-        let mut ans = String::new();
-
         let mut santa = Record::new();
 
         santa.record();
@@ -99,7 +97,7 @@ impl Questions for Day3 {
             santa.record();
         });
 
-        ans = santa.len().to_string();
+        let ans = santa.len().to_string();
 
         println!("\nAnswer to first question is {}!\n", ans.green());
 
@@ -107,8 +105,6 @@ impl Questions for Day3 {
     }
 
     fn question_two(&mut self) -> Result<String, Box<dyn std::error::Error>> {
-        let mut ans = String::new();
-
         let mut santa = Record::new();
         let mut robo_santa = Record::new();
 
@@ -127,7 +123,7 @@ impl Questions for Day3 {
 
         santa.merge(robo_santa);
 
-        ans = (santa.len()).to_string();
+        let ans = (santa.len()).to_string();
 
         println!("\nAnswer to second question is {}!\n", ans.green());
 

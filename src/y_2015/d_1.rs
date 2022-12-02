@@ -6,9 +6,7 @@ pub struct Day1 {
 
 impl Questions for Day1 {
     fn question_one(&mut self) -> Result<String, Box<dyn std::error::Error>> {
-        let mut ans = String::new();
-
-        ans = (&self.inp.iter().sum::<i32>()).to_string();
+        let ans = (&self.inp.iter().sum::<i32>()).to_string();
 
         println!("\nAnswer to first question is {}!\n", ans.green());
 
