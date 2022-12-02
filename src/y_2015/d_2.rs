@@ -1,5 +1,3 @@
-use std::thread::panicking;
-
 use crate::prelude::*;
 
 pub struct Day2 {
@@ -9,6 +7,33 @@ pub struct Day2 {
 }
 
 impl Questions for Day2 {
+    fn init(&mut self, file: &str) -> Result<(), Box<dyn std::error::Error>> {
+        let contents = read_from_file(file);
+
+        let values = contents
+            .trim()
+            .split("x")
+            .filter(|v| !v.is_empty())
+            .map(|v| {
+                v.parse::<u32>()
+                    .expect("error trying to convert string to int")
+            })
+            .collect::<Vec<_>>();
+
+        if values.len() != 3 {
+            panic!(
+                "expected the length of values to be 3 but found {}",
+                values.len()
+            );
+        }
+
+        self.l = values[0];
+        self.w = values[1];
+        self.h = values[2];
+
+        Ok(())
+    }
+
     fn question_one(&mut self) -> Result<String, Box<dyn std::error::Error>> {
         let mut ans = String::new();
 
@@ -35,31 +60,8 @@ impl Questions for Day2 {
 }
 
 impl Day2 {
-    pub fn new(file: &str) -> Day2 {
-        let contents = read_from_file(file);
-
-        let values = contents
-            .trim()
-            .split("x")
-            .filter(|v| !v.is_empty())
-            .map(|v| {
-                v.parse::<u32>()
-                    .expect("error trying to convert string to int")
-            })
-            .collect::<Vec<_>>();
-
-        if values.len() != 3 {
-            panic!(
-                "expected the length of values to be 3 but found {}",
-                values.len()
-            );
-        }
-
-        Day2 {
-            l: values[0],
-            w: values[1],
-            h: values[2],
-        }
+    pub fn new() -> Day2 {
+        Day2 { l: 0, w: 0, h: 0 }
     }
 
     pub fn get_dimensions(&self) -> (usize, usize) {
@@ -102,7 +104,9 @@ mod tests {
     fn q1_works() {
         let expected_q1 = String::from("58");
 
-        let mut day2 = Day2::new("inputs/2015/2a.txt");
+        let mut day2 = Day2::new();
+
+        day2.init("inputs/2015/2a.txt").expect("error trying to init day2");
 
         let q1 = day2.question_one().unwrap();
 
@@ -113,7 +117,9 @@ mod tests {
     fn q2_works() {
         let expected_q2 = String::from("34");
 
-        let mut day2 = Day2::new("inputs/2015/2a.txt");
+        let mut day2 = Day2::new();
+
+        day2.init("inputs/2015/2a.txt").expect("error trying to init day2");
 
         let q2 = day2.question_two().unwrap();
 

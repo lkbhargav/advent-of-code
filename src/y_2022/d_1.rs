@@ -24,10 +24,8 @@ impl Questions for Day1 {
 
         Ok(ans)
     }
-}
 
-impl Day1 {
-    pub fn new(file: &str) -> Day1 {
+    fn init(&mut self, file: &str) -> Result<(), Box<dyn std::error::Error>> {
         let input = read_from_file(file);
 
         let mut elves_input = input
@@ -48,7 +46,17 @@ impl Day1 {
 
         elves_input.sort_by(|a, b| b.partial_cmp(a).unwrap());
 
-        return Day1 { inp: elves_input };
+        self.inp = elves_input;
+
+        Ok(())
+    }
+}
+
+impl Day1 {
+    pub fn new() -> Day1 {
+        Day1{
+            inp: vec![]
+        }
     }
 }
 
@@ -57,16 +65,28 @@ mod tests {
     use super::*;
 
     #[test]
-    fn it_works() {
+    fn q1_works() {
         let expected_q1 = String::from("24000");
-        let expected_q2 = String::from("45000");
 
-        let mut day21 = Day1::new("inputs/2022/1a.txt");
+        let mut day21 = Day1::new();
+
+        day21.init("inputs/2022/1a.txt").expect("error trying to init day1");
 
         let q1 = day21.question_one().unwrap();
-        let q2 = day21.question_two().unwrap();
 
         assert_eq!(expected_q1, q1);
+    }
+
+    #[test]
+    fn q2_works() {
+        let expected_q2 = String::from("45000");
+
+        let mut day21 = Day1::new();
+
+        day21.init("inputs/2022/1a.txt").expect("error trying to init day1");
+
+        let q2 = day21.question_two().unwrap();
+
         assert_eq!(expected_q2, q2);
     }
 }

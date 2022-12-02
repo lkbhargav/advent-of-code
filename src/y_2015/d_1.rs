@@ -33,10 +33,8 @@ impl Questions for Day1 {
 
         Ok(ans)
     }
-}
 
-impl Day1 {
-    pub fn new(file: &str) -> Day1 {
+    fn init(&mut self, file: &str) -> Result<(), Box<dyn std::error::Error>> {
         let contents = read_from_file(file);
 
         let contents = contents
@@ -52,7 +50,15 @@ impl Day1 {
             })
             .collect();
 
-        Day1 { inp: contents }
+        self.inp = contents;
+
+        Ok(())
+    }
+}
+
+impl Day1 {
+    pub fn new() -> Day1 {
+        Day1 { inp: vec![] }
     }
 }
 
@@ -64,7 +70,9 @@ mod tests {
     fn q1_works() {
         let expected_q1 = String::from("3");
 
-        let mut day1 = Day1::new("inputs/2015/1a.txt");
+        let mut day1 = Day1::new();
+
+        day1.init("inputs/2015/1a.txt").expect("error trying to init day1");
 
         let q1 = day1.question_one().unwrap();
 
@@ -75,7 +83,9 @@ mod tests {
     fn q2_works() {
         let expected_q2 = String::from("1");
 
-        let mut day1 = Day1::new("inputs/2015/1a.txt");
+        let mut day1 = Day1::new();
+
+        day1.init("inputs/2015/1a.txt").expect("error trying to init day1");
 
         let q2 = day1.question_two().unwrap();
 
