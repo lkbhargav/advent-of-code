@@ -54,9 +54,7 @@ impl Questions for Day1 {
 
 impl Day1 {
     pub fn new() -> Day1 {
-        Day1{
-            inp: vec![]
-        }
+        Day1 { inp: vec![] }
     }
 }
 
@@ -70,7 +68,9 @@ mod tests {
 
         let mut day21 = Day1::new();
 
-        day21.init("inputs/2022/1a.txt").expect("error trying to init day1");
+        day21
+            .init("inputs/2022/1a.txt")
+            .expect("error trying to init day1");
 
         let q1 = day21.question_one().unwrap();
 
@@ -83,7 +83,9 @@ mod tests {
 
         let mut day21 = Day1::new();
 
-        day21.init("inputs/2022/1a.txt").expect("error trying to init day1");
+        day21
+            .init("inputs/2022/1a.txt")
+            .expect("error trying to init day1");
 
         let q2 = day21.question_two().unwrap();
 

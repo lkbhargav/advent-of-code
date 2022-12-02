@@ -106,7 +106,8 @@ mod tests {
 
         let mut day2 = Day2::new();
 
-        day2.init("inputs/2015/2a.txt").expect("error trying to init day2");
+        day2.init("inputs/2015/2a.txt")
+            .expect("error trying to init day2");
 
         let q1 = day2.question_one().unwrap();
 
@@ -119,7 +120,8 @@ mod tests {
 
         let mut day2 = Day2::new();
 
-        day2.init("inputs/2015/2a.txt").expect("error trying to init day2");
+        day2.init("inputs/2015/2a.txt")
+            .expect("error trying to init day2");
 
         let q2 = day2.question_two().unwrap();
 

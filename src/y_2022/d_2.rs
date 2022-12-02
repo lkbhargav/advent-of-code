@@ -1,36 +1,18 @@
 use crate::prelude::*;
 
 #[derive(Debug, PartialEq, Clone, Copy)]
-pub enum Opponent {
-    A,
-    B,
-    C,
+pub enum Pieces {
+    Rock = 1,
+    Paper = 2,
+    Scissors = 3,
 }
 
-impl Opponent {
-    fn convert(i: &str) -> Opponent {
+impl Pieces {
+    fn convert(i: &str) -> Pieces {
         match i {
-            "a" | "A" => Opponent::A,
-            "b" | "B" => Opponent::B,
-            "c" | "C" => Opponent::C,
-            _ => panic!("invalid type passed, {}", i),
-        }
-    }
-}
-
-#[derive(Debug, PartialEq, Clone, Copy)]
-pub enum Me {
-    X = 1,
-    Y = 2,
-    Z = 3,
-}
-
-impl Me {
-    fn convert(i: &str) -> Me {
-        match i {
-            "x" | "X" => Me::X,
-            "y" | "Y" => Me::Y,
-            "z" | "Z" => Me::Z,
+            "a" | "A" | "x" | "X" => Pieces::Rock,
+            "b" | "B" | "y" | "Y" => Pieces::Paper,
+            "c" | "C" | "z" | "Z" => Pieces::Scissors,
             _ => panic!("invalid type passed, {}", i),
         }
     }
@@ -44,7 +26,7 @@ pub enum GameResult {
 }
 
 pub struct Day2 {
-    inp: Vec<(Opponent, Me)>,
+    inp: Vec<(Pieces, Pieces)>,
 }
 
 impl Questions for Day2 {
@@ -72,7 +54,7 @@ impl Questions for Day2 {
 
         for fight in &self.inp {
             let res = Day2::me_to_result(fight.clone().1);
-            score += res as u32 + Day2::what_should_I_play(fight.clone().0, res) as u32;
+            score += res as u32 + Day2::what_should_i_play(fight.clone().0, res) as u32;
         }
 
         ans = score.to_string();
@@ -89,9 +71,9 @@ impl Questions for Day2 {
             .lines()
             .map(|v| {
                 let v = v.split_whitespace().collect::<Vec<&str>>();
-                (Opponent::convert(v[0]), Me::convert(v[1]))
+                (Pieces::convert(v[0]), Pieces::convert(v[1]))
             })
-            .collect::<Vec<(Opponent, Me)>>();
+            .collect::<Vec<(Pieces, Pieces)>>();
 
         self.inp = contents;
 
@@ -101,25 +83,20 @@ impl Questions for Day2 {
 
 impl Day2 {
     pub fn new() -> Day2 {
-        Day2 {
-            inp: vec![]
-        }
+        Day2 { inp: vec![] }
     }
 
-    pub fn game_result(fight: (Opponent, Me)) -> GameResult {
+    pub fn game_result(fight: (Pieces, Pieces)) -> GameResult {
         let or = fight.0;
         let mr = fight.1;
 
-        if (or == Opponent::A && mr == Me::X)
-            || (or == Opponent::B && mr == Me::Y)
-            || (or == Opponent::C && mr == Me::Z)
-        {
+        if or == mr {
             return GameResult::Draw;
         }
 
-        if (or == Opponent::A && mr == Me::Z)
-            || (or == Opponent::B && mr == Me::X)
-            || (or == Opponent::C && mr == Me::Y)
+        if (or == Pieces::Rock && mr == Pieces::Scissors)
+            || (or == Pieces::Paper && mr == Pieces::Rock)
+            || (or == Pieces::Scissors && mr == Pieces::Paper)
         {
             return GameResult::Lose;
         }
@@ -127,36 +104,32 @@ impl Day2 {
         GameResult::Win
     }
 
-    pub fn me_to_result(me: Me) -> GameResult {
+    pub fn me_to_result(me: Pieces) -> GameResult {
         match me {
-            Me::X => GameResult::Lose,
-            Me::Y => GameResult::Draw,
-            Me::Z => GameResult::Win,
+            Pieces::Rock => GameResult::Lose,
+            Pieces::Paper => GameResult::Draw,
+            Pieces::Scissors => GameResult::Win,
         }
     }
 
-    pub fn what_should_I_play(opponent: Opponent, game_result: GameResult) -> Me {
+    pub fn what_should_i_play(opponent: Pieces, game_result: GameResult) -> Pieces {
         match game_result {
             GameResult::Lose => {
                 return match opponent {
-                    Opponent::A => Me::Z,
-                    Opponent::B => Me::X,
-                    Opponent::C => Me::Y,
+                    Pieces::Rock => Pieces::Scissors,
+                    Pieces::Paper => Pieces::Rock,
+                    Pieces::Scissors => Pieces::Scissors,
                 };
-            },
+            }
             GameResult::Win => {
                 return match opponent {
-                    Opponent::A => Me::Y,
-                    Opponent::B => Me::Z,
-                    Opponent::C => Me::X,
+                    Pieces::Rock => Pieces::Paper,
+                    Pieces::Paper => Pieces::Scissors,
+                    Pieces::Scissors => Pieces::Rock,
                 };
             }
             GameResult::Draw => {
-                return match opponent {
-                    Opponent::A => Me::X,
-                    Opponent::B => Me::Y,
-                    Opponent::C => Me::Z,
-                }
+                return opponent;
             }
         }
     }
@@ -172,7 +145,8 @@ mod tests {
 
         let mut day2 = Day2::new();
 
-        day2.init("inputs/2022/2a.txt").expect("error trying to init day2");
+        day2.init("inputs/2022/2a.txt")
+            .expect("error trying to init day2");
 
         let q1 = day2.question_one().unwrap();
 
@@ -185,7 +159,8 @@ mod tests {
 
         let mut day2 = Day2::new();
 
-        day2.init("inputs/2022/2a.txt").expect("error trying to init day2");
+        day2.init("inputs/2022/2a.txt")
+            .expect("error trying to init day2");
 
         let q2 = day2.question_two().unwrap();
 

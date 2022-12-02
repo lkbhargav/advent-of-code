@@ -24,11 +24,9 @@ fn main() {
 
     println!("\nfetched inputs from `{}` file!\n", file.yellow());
 
-    let mut y15: Vec<Box<dyn Questions>> =
-        vec![Box::new(y15d1::new()), Box::new(y15d2::new())];
+    let mut y15: Vec<Box<dyn Questions>> = vec![Box::new(y15d1::new()), Box::new(y15d2::new())];
 
-    let mut y22: Vec<Box<dyn Questions>> =
-        vec![Box::new(y22d1::new()), Box::new(y22d2::new())];
+    let mut y22: Vec<Box<dyn Questions>> = vec![Box::new(y22d1::new()), Box::new(y22d2::new())];
 
     let mut problem: &mut dyn Questions = y22[0].as_mut();
 
@@ -38,7 +36,9 @@ fn main() {
         _ => println!("Still not implemented"),
     }
 
-    problem.init(file).expect("error trying to initialize the problem");
+    problem
+        .init(file)
+        .expect("error trying to initialize the problem");
 
     run(problem, QuestionNumber::One);
     run(problem, QuestionNumber::Two);
