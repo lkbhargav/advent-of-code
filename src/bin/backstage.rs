@@ -43,8 +43,6 @@ fn main() {
 
     let file_path = format!("{}/src/{new_year_dir_name}", current_dir);
 
-    println!("File Path: {}", file_path);
-
     let does_year_exists = Path::new(&file_path).exists();
 
     if !does_year_exists {
@@ -76,10 +74,27 @@ fn main() {
         append_to_file(mod_file, text_to_append);
     }
 
-    let text_to_append = &get_template_solution(&day);
+    let text_to_append = &get_template_solution(&day, &year);
     let day_file = &format!("{current_dir}/src/y_{year}/d_{day}.rs");
     if is_the_file_empty(day_file) {
         append_to_file(day_file, text_to_append);
+    }
+
+    let file_path = format!("{file_path}/{day}a.txt");
+    if !Path::new(&file_path).exists() {
+        // Prompt for sample input
+        let test_contents = prompt("Enter the test data?", "");
+
+        if !test_contents.is_empty() {
+            let file_path = format!("inputs/{}", year);
+            if !Path::new(&file_path).exists() {
+                fs::create_dir_all(&file_path).expect("something went wrong creating a directory");
+            }
+
+            let file_path = format!("{file_path}/{day}a.txt");
+            File::create(&file_path).expect("error trying to create a file");
+            append_to_file(&file_path, &test_contents);
+        }
     }
 }
 
@@ -123,30 +138,71 @@ fn is_the_file_empty(file_name: &str) -> bool {
     contents.lines().count() == 0
 }
 
-fn get_template_solution(problem_number: &str) -> String {
+fn get_template_solution(day: &str, year: &str) -> String {
     format!(
         r#"
 use crate::prelude::*;
 
-pub struct Day{problem_number} {{}}
+pub struct Day{day} {{}}
 
-impl Questions for Day{problem_number} {{
-    fn question_one(&self) -> Result<(), Box<dyn std::error::Error>> {{
-        println!("Question 1!");
-        Ok(())
+impl Questions for Day{day} {{
+    fn question_one(&mut self) -> Result<String, Box<dyn std::error::Error>> {{
+        let mut ans= String::new();
+
+        // TODO: your logic goes in here...
+
+        println!("\nAnswer to first question is {{}}!\n", ans.green());
+
+        Ok(ans)
     }}
 
-    fn question_two(&self) -> Result<(), Box<dyn std::error::Error>> {{
-        println!("Question 2!");
-        Ok(())
+    fn question_two(&mut self) -> Result<String, Box<dyn std::error::Error>> {{
+        let mut ans= String::new();
+
+        // TODO: your logic goes in here...
+
+        println!("\nAnswer to second question is {{}}!\n", ans.green());
+
+        Ok(ans)
     }}
 }}
 
-impl Day{problem_number} {{
-    pub fn new() -> Day{problem_number} {{
-        return Day{problem_number} {{}};
+impl Day{day} {{
+    pub fn new(file: &str) -> Day{day} {{
+        let contents = read_from_file(file);
+
+        // file parsing logic goes here
+
+        Day{day} {{}}
     }}
-}}            
+}}
+
+#[cfg(test)]
+mod tests {{
+    use super::*;
+
+    #[test]
+    fn q1_works() {{
+        let expected_q1 = String::from("");
+
+        let mut day{day} = Day{day}::new("inputs/{year}/{day}a.txt");
+
+        let q1 = day{day}.question_one().unwrap();
+
+        assert_eq!(expected_q1, q1);
+    }}
+
+    #[test]
+    fn q2_works() {{
+        let expected_q2 = String::from("");
+        
+        let mut day{day} = Day{day}::new("inputs/{year}/{day}a.txt");
+
+        let q2 = day{day}.question_two().unwrap();
+
+        assert_eq!(expected_q2, q2);
+    }}
+}}
         "#
     )
 }
