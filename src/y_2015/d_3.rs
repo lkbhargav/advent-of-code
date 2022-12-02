@@ -5,12 +5,6 @@ use crate::prelude::*;
 #[derive(Eq, Hash, Debug, PartialEq, Clone, Copy)]
 struct Direction(i32, i32);
 
-impl Direction {
-    pub fn new(x: i32, y: i32) -> Direction {
-        Direction(x, y)
-    }
-}
-
 #[derive(Eq, Hash, Debug, PartialEq, Clone, Copy)]
 pub enum Compass {
     North,
