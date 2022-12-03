@@ -3,28 +3,35 @@ use std::collections::HashMap;
 use crate::prelude::*;
 
 pub struct Day3 {
-    inp: Vec<u8>,
-    q2: Vec<u8>,
+    inp: Vec<Vec<u8>>,
 }
 
 impl Questions for Day3 {
     fn init(&mut self, file: &str) -> Result<(), Box<dyn std::error::Error>> {
         let contents = read_from_file(file);
-        let mut common_values = vec![];
 
-        contents.lines().filter(|f| !f.is_empty()).for_each(|v| {
+        self.inp = contents
+            .lines()
+            .filter(|f| !f.is_empty())
+            .map(|v| v.chars().into_iter().map(|j| j as u8).collect::<Vec<u8>>())
+            .collect::<Vec<_>>();
+
+        Ok(())
+    }
+
+    fn question_one(&mut self) -> Result<String, Box<dyn std::error::Error>> {
+        let mut sum = 0;
+
+        for v in self.inp.clone().into_iter() {
             let mut map = HashMap::new();
-
             let mid_point = v.len() / 2;
 
-            for (i, c) in v.chars().enumerate() {
+            for (i, c) in v.into_iter().enumerate() {
                 if i > mid_point - 1 {
                     let does_contain = map.contains_key(&c);
 
                     if does_contain {
-                        let val = Day3::fetch_value(c);
-
-                        common_values.push(val);
+                        sum += Day3::fetch_value(c);
 
                         break;
                     }
@@ -32,13 +39,22 @@ impl Questions for Day3 {
                     map.insert(c, 1);
                 }
             }
-        });
+        }
+
+        let ans = sum.to_string();
+
+        println!("\nAnswer to first question is {}!\n", ans.green());
+
+        Ok(ans)
+    }
+
+    fn question_two(&mut self) -> Result<String, Box<dyn std::error::Error>> {
+        let mut sum = 0;
 
         let mut line_num = 0;
         let mut map = HashMap::new();
-        let mut common_values_q2 = vec![];
 
-        contents.lines().filter(|f| !f.is_empty()).for_each(|v| {
+        for v in self.inp.clone().into_iter() {
             if line_num % 3 == 0 {
                 line_num = 0;
                 map = HashMap::new();
@@ -46,7 +62,7 @@ impl Questions for Day3 {
 
             let mut tmp = vec![];
 
-            for c in v.chars() {
+            for c in v.into_iter() {
                 if !tmp.contains(&c) {
                     let v = match map.get(&c) {
                         Some(v) => *v,
@@ -56,8 +72,8 @@ impl Questions for Day3 {
                     // this is line 3 since we start the line numbers from 0
                     if line_num == 2 {
                         if v == 2 {
-                            let val = Day3::fetch_value(c);
-                            common_values_q2.push(val);
+                            sum += Day3::fetch_value(c);
+                            
                             break;
                         }
                     }
@@ -69,33 +85,7 @@ impl Questions for Day3 {
             }
 
             line_num += 1;
-        });
-
-        self.inp = common_values;
-        self.q2 = common_values_q2;
-
-        Ok(())
-    }
-
-    fn question_one(&mut self) -> Result<String, Box<dyn std::error::Error>> {
-        let mut sum = 0;
-        self.inp.clone().into_iter().for_each(|v| {
-            sum += v as usize;
-        });
-
-        let ans = sum.to_string();
-
-        println!("\nAnswer to first question is {}!\n", ans.green());
-
-        Ok(ans)
-    }
-
-    fn question_two(&mut self) -> Result<String, Box<dyn std::error::Error>> {
-        let mut sum = 0;
-        
-        self.q2.clone().into_iter().for_each(|v| {
-            sum += v as usize;
-        });
+        }
 
         let ans = sum.to_string();
 
@@ -107,21 +97,18 @@ impl Questions for Day3 {
 
 impl Day3 {
     pub fn new() -> Day3 {
-        Day3 {
-            inp: vec![],
-            q2: vec![],
-        }
+        Day3 { inp: vec![] }
     }
 
-    pub fn fetch_value(c: char) -> u8 {
-        let mut val = c as u8;
-        if c.is_lowercase() {
-            val = val - 96;
+    pub fn fetch_value(mut c: u8) -> u8 {
+        let val = c as char;
+        if val.is_lowercase() {
+            c = c - 96;
         } else {
-            val = (val - 65) + 27;
+            c = (c - 65) + 27;
         }
 
-        val
+        c
     }
 }
 
