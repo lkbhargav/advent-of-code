@@ -59,7 +59,7 @@ impl NiceOrNot {
 
     pub fn check_rule_3(&mut self, a: u8, b: u8) {
         if self.rule_3 == State::Unknown && self.valid == State::Unknown {
-            if a == b-1 && vec![98, 100, 113, 121].contains(&(b as i32)) {
+            if a == b - 1 && vec![98, 100, 113, 121].contains(&(b as i32)) {
                 self.rule_3 = State::Invalid;
                 self.validate();
             }
@@ -75,14 +75,14 @@ impl NiceOrNot {
     }
 
     pub fn validate(&mut self) {
-        if self.rule_1 == State::Valid
-            && self.rule_2 == State::Valid
-            && self.rule_3 == State::Valid {
-                self.valid = State::Valid;
+        if self.rule_1 == State::Valid && self.rule_2 == State::Valid && self.rule_3 == State::Valid
+        {
+            self.valid = State::Valid;
         } else if self.rule_1 == State::Invalid
             || self.rule_2 == State::Invalid
-            || self.rule_3 == State::Invalid {
-                self.valid = State::Invalid;
+            || self.rule_3 == State::Invalid
+        {
+            self.valid = State::Invalid;
         }
     }
 }
@@ -120,7 +120,7 @@ impl NiceOrNotV2 {
             None => 0,
         };
 
-        self.rule_1_map.insert(pair, val+1);
+        self.rule_1_map.insert(pair, val + 1);
 
         true
     }
@@ -162,46 +162,55 @@ impl NiceOrNotV2 {
 
 pub struct Day5 {
     q1: Vec<NiceOrNot>,
-    q2: Vec<NiceOrNotV2>
+    q2: Vec<NiceOrNotV2>,
 }
 
 impl Questions for Day5 {
     fn init(&mut self, file: &str) -> Result<(), Box<dyn std::error::Error>> {
         let contents = read_from_file(file);
 
-        self.q1 = contents.lines()
-        .filter(|v| !v.is_empty())
-        .map(|v| {
-            let v = v.trim();
-            NiceOrNot::new(v)
-        }).collect();
+        self.q1 = contents
+            .lines()
+            .filter(|v| !v.is_empty())
+            .map(|v| {
+                let v = v.trim();
+                NiceOrNot::new(v)
+            })
+            .collect();
 
-        self.q2 = contents.lines()
-        .filter(|v| !v.is_empty())
-        .map(|v| {
-            let v = v.trim();
-            NiceOrNotV2::new(v)
-        }).collect();
+        self.q2 = contents
+            .lines()
+            .filter(|v| !v.is_empty())
+            .map(|v| {
+                let v = v.trim();
+                NiceOrNotV2::new(v)
+            })
+            .collect();
 
         Ok(())
     }
 
     fn question_one(&mut self) -> Result<String, Box<dyn std::error::Error>> {
-        let results = self.q1.clone().into_iter()
-        .map(|mut v| {
-            v.word.clone().into_iter().enumerate().for_each(|(i,u)| {
-                v.check_rule_1(u);
-                
-                if i > 0 {
-                    v.check_rule_2(v.word[i-1], u);
-                    v.check_rule_3(v.word[i-1], u);
-                }
-            });
+        let results = self
+            .q1
+            .clone()
+            .into_iter()
+            .map(|mut v| {
+                v.word.clone().into_iter().enumerate().for_each(|(i, u)| {
+                    v.check_rule_1(u);
 
-            v.wrap_up();
+                    if i > 0 {
+                        v.check_rule_2(v.word[i - 1], u);
+                        v.check_rule_3(v.word[i - 1], u);
+                    }
+                });
 
-            v.valid
-        }).filter(|v| *v == State::Valid).collect::<Vec<State>>();
+                v.wrap_up();
+
+                v.valid
+            })
+            .filter(|v| *v == State::Valid)
+            .collect::<Vec<State>>();
 
         let ans = results.len().to_string();
 
@@ -212,23 +221,31 @@ impl Questions for Day5 {
 
     fn question_two(&mut self) -> Result<String, Box<dyn std::error::Error>> {
         let mut prev_pair = false;
-        let results = self.q2.clone().into_iter()
-        .map(|mut v| {
-            v.word.clone().into_iter().enumerate().for_each(|(i,u)| {
-                if i+1 < v.word.len() {
-                    prev_pair = v.check_rule_1(if i == 0 {None} else {Some(v.word[i-1])}, (u, v.word[i+1]), prev_pair);
-                }
+        let results = self
+            .q2
+            .clone()
+            .into_iter()
+            .map(|mut v| {
+                v.word.clone().into_iter().enumerate().for_each(|(i, u)| {
+                    if i + 1 < v.word.len() {
+                        prev_pair = v.check_rule_1(
+                            if i == 0 { None } else { Some(v.word[i - 1]) },
+                            (u, v.word[i + 1]),
+                            prev_pair,
+                        );
+                    }
 
-                if i+2 < v.word.len() {
-                    v.check_rule_2((u, v.word[i+1], v.word[i+2]));
-                }
-            });
+                    if i + 2 < v.word.len() {
+                        v.check_rule_2((u, v.word[i + 1], v.word[i + 2]));
+                    }
+                });
 
-            v.wrap_up();
+                v.wrap_up();
 
-            v.valid
-        }).filter(|v| *v == State::Valid).collect::<Vec<State>>();
-
+                v.valid
+            })
+            .filter(|v| *v == State::Valid)
+            .collect::<Vec<State>>();
 
         let ans = results.len().to_string();
 
@@ -240,7 +257,10 @@ impl Questions for Day5 {
 
 impl Day5 {
     pub fn new() -> Day5 {
-        Day5 { q1: vec![], q2: vec![] }
+        Day5 {
+            q1: vec![],
+            q2: vec![],
+        }
     }
 }
 

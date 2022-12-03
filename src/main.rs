@@ -1,7 +1,10 @@
 use advent_of_code::{
     prelude::*,
-    y_2015::{d_1::Day1 as y15d1, d_2::Day2 as y15d2, d_3::Day3 as y15d3, d_4::Day4 as y15d4, d_5::Day5 as y15d5},
-    y_2022::{d_1::Day1 as y22d1, d_2::Day2 as y22d2},
+    y_2015::{
+        d_1::Day1 as y15d1, d_2::Day2 as y15d2, d_3::Day3 as y15d3, d_4::Day4 as y15d4,
+        d_5::Day5 as y15d5,
+    },
+    y_2022::{d_1::Day1 as y22d1, d_2::Day2 as y22d2, d_3::Day3 as y22d3},
 };
 
 fn run(q: &mut dyn Questions, question_number: QuestionNumber) {
@@ -32,7 +35,11 @@ fn main() {
         Box::new(y15d5::new()),
     ];
 
-    let mut y22: Vec<Box<dyn Questions>> = vec![Box::new(y22d1::new()), Box::new(y22d2::new())];
+    let mut y22: Vec<Box<dyn Questions>> = vec![
+        Box::new(y22d1::new()),
+        Box::new(y22d2::new()),
+        Box::new(y22d3::new()),
+    ];
 
     let mut problem: &mut dyn Questions = y22[0].as_mut();
 
