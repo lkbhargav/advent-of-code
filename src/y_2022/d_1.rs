@@ -8,7 +8,7 @@ impl Questions for Day1 {
     fn question_one(&mut self) -> Result<String, Box<dyn std::error::Error>> {
         let ans = (&self.inp.iter().max().unwrap()).to_string();
 
-        println!("\nAnswer to first question is {}!\n", ans.green());
+        println!("\nAnswer to first question is {}\n", ans.green());
 
         Ok(ans)
     }
@@ -16,7 +16,7 @@ impl Questions for Day1 {
     fn question_two(&mut self) -> Result<String, Box<dyn std::error::Error>> {
         let ans = (&self.inp.iter().take(3).sum::<u32>()).to_string();
 
-        println!("\nAnswer to second question is {}!\n", ans.green());
+        println!("\nAnswer to second question is {}\n", ans.green());
 
         Ok(ans)
     }

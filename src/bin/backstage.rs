@@ -196,7 +196,7 @@ impl Questions for Day{day} {{
 
         let ans = "na".to_string();
 
-        println!("\nAnswer to first question is {{}}!\n", ans.green());
+        println!("\nAnswer to first question is {{}}\n", ans.green());
 
         Ok(ans)
     }}
@@ -206,7 +206,7 @@ impl Questions for Day{day} {{
 
         let ans = "na".to_string();
 
-        println!("\nAnswer to second question is {{}}!\n", ans.green());
+        println!("\nAnswer to second question is {{}}\n", ans.green());
 
         Ok(ans)
     }}
