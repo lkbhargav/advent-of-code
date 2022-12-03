@@ -52,5 +52,7 @@ pub fn prompt_with_validation<'a>(
 
 pub fn read_from_file(path: &str) -> String {
     return fs::read_to_string(path)
-        .expect("expected a valid file at the specified path but found none");
+        .expect("expected a valid file at the specified path but found none")
+        .trim()
+        .to_string();
 }

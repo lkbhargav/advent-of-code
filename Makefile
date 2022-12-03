@@ -10,3 +10,7 @@ run:
 .PHONY: fmt
 fmt:
 	cargo fmt
+
+.PHONY: test
+test:
+	cargo test -- --show-output

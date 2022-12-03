@@ -58,9 +58,7 @@ impl Questions for Day4 {
 
 impl Day4 {
     pub fn new() -> Day4 {
-        Day4 {
-            inp: String::new()
-        }
+        Day4 { inp: String::new() }
     }
 
     pub fn confirm_padding(v: Digest, padding: &str) -> bool {

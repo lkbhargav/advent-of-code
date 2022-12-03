@@ -111,8 +111,8 @@ impl Questions for Day3 {
         santa.record();
         robo_santa.record();
 
-        self.inp.clone().into_iter().enumerate().for_each(|(i,v)| {
-            if i%2 == 0 {
+        self.inp.clone().into_iter().enumerate().for_each(|(i, v)| {
+            if i % 2 == 0 {
                 robo_santa.update_directions(v);
                 robo_santa.record();
             } else {
