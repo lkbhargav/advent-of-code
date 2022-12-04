@@ -83,8 +83,7 @@ fn main() {
     get_test_data(
         &year,
         &day,
-        "Do you want to input `test` data?",
-        "Enter the `test` data?",
+        "Do you want to create `test` data file?",
         true,
         true,
     );
@@ -92,8 +91,7 @@ fn main() {
     get_test_data(
         &year,
         &day,
-        "Do you want to input `real` data?",
-        "Enter the `real` data?",
+        "Do you want to create `real` data file?",
         true,
         false,
     );
@@ -143,7 +141,6 @@ fn is_the_file_empty(file_name: &str) -> bool {
 fn get_test_data(
     year: &str,
     day: &str,
-    confirmation_prompt_question: &str,
     prompt_question: &str,
     default_confirmation_prompt: bool,
     test_data: bool,
@@ -153,24 +150,16 @@ fn get_test_data(
     let file_path = format!("inputs/{year}/{day}{test_data_suffix}.txt",);
 
     if !Path::new(&file_path).exists() {
-        let test_data_confirmation =
-            confirm(confirmation_prompt_question, default_confirmation_prompt);
+        let test_data_confirmation = confirm(prompt_question, default_confirmation_prompt);
 
         if test_data_confirmation {
-            // Prompt for sample input
-            let test_contents = prompt(prompt_question, "");
-
-            if !test_contents.is_empty() {
-                let file_path = format!("inputs/{}", year);
-                if !Path::new(&file_path).exists() {
-                    fs::create_dir_all(&file_path)
-                        .expect("something went wrong creating a directory");
-                }
-
-                let file_path = format!("{file_path}/{day}{test_data_suffix}.txt");
-                File::create(&file_path).expect("error trying to create a file");
-                append_to_file(&file_path, &test_contents);
+            let file_path = format!("inputs/{}", year);
+            if !Path::new(&file_path).exists() {
+                fs::create_dir_all(&file_path).expect("something went wrong creating a directory");
             }
+
+            let file_path = format!("{file_path}/{day}{test_data_suffix}.txt");
+            File::create(&file_path).expect("error trying to create a file");
         }
     }
 }
@@ -182,9 +171,14 @@ use crate::prelude::*;
 
 pub struct Day{day} {{}}
 
+// uncomment the following line incase you want to get the file name to reintialize
+// const FILE_NAME: &str = "inputs/{year}/{day}.txt";
+
 impl Questions for Day{day} {{
     fn init(&mut self, file: &str) -> Result<(), Box<dyn std::error::Error>> {{
         let contents = read_from_file(file);
+
+        contents.lines().filter(|f| !f.is_empty());
 
         // TODO: file parsing logic goes here
 
@@ -224,7 +218,7 @@ mod tests {{
 
     #[test]
     fn q1_works() {{
-        let expected_q1 = String::from("");
+        let expected_q1 = String::from("na");
 
         let mut day{day} = Day{day}::new();
 
@@ -238,7 +232,7 @@ mod tests {{
 
     #[test]
     fn q2_works() {{
-        let expected_q2 = String::from("");
+        let expected_q2 = String::from("na");
         
         let mut day{day} = Day{day}::new();
 
