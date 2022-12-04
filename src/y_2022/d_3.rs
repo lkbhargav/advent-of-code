@@ -73,7 +73,7 @@ impl Questions for Day3 {
                     if line_num == 2 {
                         if v == 2 {
                             sum += Day3::fetch_value(c);
-                            
+
                             break;
                         }
                     }
