@@ -1,5 +1,4 @@
 use crate::prelude::*;
-use regex::Regex;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Operation {
@@ -61,20 +60,15 @@ impl Questions for Day6 {
         const END_NAME: &str = "end";
 
         self.inp = contents.lines().filter(|f| !f.is_empty()).map(|v| {
-            let parsed_regex = Regex::new(
-                format!("(?P<{OPERATION_NAME}>turn off|turn on|toggle) (?P<{START_NAME}>\\d+,\\d+) through (?P<{END_NAME}>\\d+,\\d+)").as_str(),
-            )
-            .expect("error trying to parse using regex");
-
-            let captures = parsed_regex.captures(v).unwrap();
+            let captures = regex_parser(format!("(?P<{OPERATION_NAME}>turn off|turn on|toggle) (?P<{START_NAME}>\\d+,\\d+) through (?P<{END_NAME}>\\d+,\\d+)").as_str(), v);
             
-            let operation = captures.name(OPERATION_NAME).expect("error fetching operation");
+            let operation = captures.get_name(OPERATION_NAME);
             let operation = Operation::parse(operation.as_str()).expect("error parsing string to operation");
 
-            let start = captures.name(START_NAME).expect("error fetching start coord");
+            let start = captures.get_name(START_NAME);
             let start = Coord::parse(start.as_str()).expect("error parsing start coord");
 
-            let end = captures.name(END_NAME).expect("error fetching end coord");
+            let end = captures.get_name(END_NAME);
             let end = Coord::parse(end.as_str()).expect("error parsing end coord");
 
             Instruction{

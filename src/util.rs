@@ -1,5 +1,6 @@
 use colored::*;
 use dialoguer::{theme::ColorfulTheme, Confirm, Input, Select};
+use regex::{Captures, Regex};
 use std::fs;
 
 pub fn prompt_select<T>(q: &str, items: &Vec<T>) -> usize
@@ -55,4 +56,41 @@ pub fn read_from_file(path: &str) -> String {
         .expect("expected a valid file at the specified path but found none")
         .trim()
         .to_string();
+}
+
+pub struct RegexCaptures<'a> {
+    captures: Captures<'a>,
+}
+
+impl<'a> RegexCaptures<'a> {
+    pub fn new(captures: Captures<'a>) -> Self {
+        Self { captures }
+    }
+
+    pub fn get_name(&self, name: &str) -> String {
+        self.captures
+            .name(name)
+            .expect("error trying to get captures")
+            .as_str()
+            .to_string()
+    }
+
+    pub fn get_name_usize(&self, name: &str) -> usize {
+        self.captures
+            .name(name)
+            .expect("error trying to get captures")
+            .as_str()
+            .parse()
+            .expect("error trying to convert string to usize")
+    }
+}
+
+pub fn regex_parser<'a>(pattern: &str, text_to_parse: &'a str) -> RegexCaptures<'a> {
+    let pattern = Regex::new(pattern).expect("error trying to fetch the pattern");
+
+    let captures = pattern
+        .captures(text_to_parse)
+        .expect("error fetching captures");
+
+    RegexCaptures::new(captures)
 }

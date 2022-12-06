@@ -1,7 +1,5 @@
-use std::collections::HashMap;
-
 use crate::prelude::*;
-use regex::Regex;
+use std::collections::HashMap;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Operation {
@@ -133,24 +131,15 @@ impl Questions for Day7 {
             .lines()
             .filter(|f| !f.is_empty())
             .for_each(|instruction| {
-                let pattern = Regex::new(r#"(?P<input>[a-zA-Z0-9| ]+) -> (?P<output>\w+)"#)
-                    .expect("error trying to parse regex");
+                let captures = regex_parser(
+                    r#"(?P<input>[a-zA-Z0-9| ]+) -> (?P<output>\w+)"#,
+                    instruction,
+                );
 
-                let captures = pattern
-                    .captures(instruction)
-                    .expect("error trying to get captures");
+                let input = captures.get_name("input");
+                let output = captures.get_name("output");
 
-                let input = captures
-                    .name("input")
-                    .expect("expected something for input capture")
-                    .as_str();
-
-                let output = captures
-                    .name("output")
-                    .expect("expected something for output capture")
-                    .as_str();
-
-                let instruction = Instruction::new(input);
+                let instruction = Instruction::new(&input);
                 if instruction.op == Operation::NOOP {
                     let inp = input.trim().parse::<usize>();
                     if inp.is_ok() {
