@@ -64,8 +64,6 @@ impl Questions for Day9 {
 
         self.number_of_cities = unique_cities.len() as usize;
 
-        dbg!(self.number_of_cities);
-
         Ok(())
     }
 

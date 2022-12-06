@@ -1,9 +1,9 @@
 use advent_of_code::{
     prelude::*,
     y_2015::{
-        d_1::Day1 as y15d1, d_2::Day2 as y15d2, d_3::Day3 as y15d3, d_4::Day4 as y15d4,
-        d_5::Day5 as y15d5, d_6::Day6 as y15d6, d_7::Day7 as y15d7, d_8::Day8 as y15d8,
-        d_9::Day9 as y15d9,
+        d_1::Day1 as y15d1, d_10::Day10 as y15d10, d_2::Day2 as y15d2, d_3::Day3 as y15d3,
+        d_4::Day4 as y15d4, d_5::Day5 as y15d5, d_6::Day6 as y15d6, d_7::Day7 as y15d7,
+        d_8::Day8 as y15d8, d_9::Day9 as y15d9,
     },
     y_2022::{
         d_1::Day1 as y22d1, d_2::Day2 as y22d2, d_3::Day3 as y22d3, d_4::Day4 as y22d4,
@@ -41,6 +41,7 @@ fn main() {
         Box::new(y15d7::new()),
         Box::new(y15d8::new()),
         Box::new(y15d9::new()),
+        Box::new(y15d10::new(false)),
     ];
 
     let mut y22: Vec<Box<dyn Questions>> = vec![
