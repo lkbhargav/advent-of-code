@@ -173,6 +173,7 @@ pub struct Day{day} {{}}
 
 // uncomment the following line incase you want to get the file name to reintialize
 // const FILE_NAME: &str = "inputs/{year}/{day}.txt";
+// const TEST_FILE_NAME: &str = "inputs/{year}/{day}a.txt";
 
 impl Questions for Day{day} {{
     fn init(&mut self, file: &str) -> Result<(), Box<dyn std::error::Error>> {{

@@ -1,13 +1,13 @@
 use advent_of_code::{
     prelude::*,
     y_2015::{
-        d_1::Day1 as y15d1, d_10::Day10 as y15d10, d_2::Day2 as y15d2, d_3::Day3 as y15d3,
-        d_4::Day4 as y15d4, d_5::Day5 as y15d5, d_6::Day6 as y15d6, d_7::Day7 as y15d7,
-        d_8::Day8 as y15d8, d_9::Day9 as y15d9,
+        d_1::Day1 as y15d1, d_10::Day10 as y15d10, d_11::Day11 as y15d11, d_12::Day12 as y15d12,
+        d_2::Day2 as y15d2, d_3::Day3 as y15d3, d_4::Day4 as y15d4, d_5::Day5 as y15d5,
+        d_6::Day6 as y15d6, d_7::Day7 as y15d7, d_8::Day8 as y15d8, d_9::Day9 as y15d9,
     },
     y_2022::{
         d_1::Day1 as y22d1, d_2::Day2 as y22d2, d_3::Day3 as y22d3, d_4::Day4 as y22d4,
-        d_5::Day5 as y22d5, d_6::Day6 as y22d6,
+        d_5::Day5 as y22d5, d_6::Day6 as y22d6, d_7::Day7 as y22d7, d_8::Day8 as y22d8,
     },
 };
 
@@ -42,6 +42,8 @@ fn main() {
         Box::new(y15d8::new()),
         Box::new(y15d9::new()),
         Box::new(y15d10::new(false)),
+        Box::new(y15d11::new(false)),
+        Box::new(y15d12::new()),
     ];
 
     let mut y22: Vec<Box<dyn Questions>> = vec![
@@ -51,6 +53,8 @@ fn main() {
         Box::new(y22d4::new()),
         Box::new(y22d5::new(false)),
         Box::new(y22d6::new()),
+        Box::new(y22d7::new()),
+        Box::new(y22d8::new()),
     ];
 
     let mut problem: &mut dyn Questions = y22[0].as_mut();
