@@ -25,6 +25,7 @@ impl Direction {
 pub struct Day9 {
     inp: Vec<(u16, Direction)>,
     diagonal_constants: Vec<(i32, i32)>,
+    adjacent_constants: Vec<(i32, i32)>,
 }
 
 // uncomment the following line incase you want to get the file name to reintialize
@@ -128,9 +129,14 @@ impl Day9 {
     pub fn new() -> Day9 {
         // these constant values when added to `x` and `y` coords will give us the diagonals of that position
         let diagonal_constants = vec![(1, 1), (1, -1), (-1, 1), (-1, -1)];
+
+        // these constant values when added to `x` and `y` coords will give us the adjacents of that position
+        let adjacent_constants = vec![(1, 0), (-1, 0), (0, 1), (0, -1)];
+
         Day9 {
             inp: vec![],
             diagonal_constants,
+            adjacent_constants,
         }
     }
 
@@ -141,7 +147,7 @@ impl Day9 {
         let mut tx = tail_pos.0;
         let mut ty = tail_pos.1;
 
-        if Day9::is_touching(head_pos, tail_pos) {
+        if self.is_touching(head_pos, tail_pos) {
             return (tx, ty);
         }
 
@@ -169,7 +175,7 @@ impl Day9 {
 
         for i in &self.diagonal_constants {
             let new_tail = (tx + i.0, ty + i.1);
-            if Day9::is_touching(head_pos, new_tail) {
+            if self.is_touching(head_pos, new_tail) {
                 return new_tail;
             }
         }
@@ -177,7 +183,7 @@ impl Day9 {
         return (tx, ty);
     }
 
-    pub fn is_touching(head_pos: (i32, i32), tail_pos: (i32, i32)) -> bool {
+    pub fn is_touching(&self, head_pos: (i32, i32), tail_pos: (i32, i32)) -> bool {
         let hx = head_pos.0;
         let hy = head_pos.1;
         let tx = tail_pos.0;
@@ -188,22 +194,16 @@ impl Day9 {
             return true;
         }
 
-        // off by 1 - covers all adjacent conditions
-        if (hx == tx + 1 && hy == ty)
-            || (hx == tx - 1 && hy == ty)
-            || (hy == ty + 1 && hx == tx)
-            || (hy == ty - 1 && hx == tx)
-        {
-            return true;
+        for pos in &self.adjacent_constants {
+            if (hx == tx + pos.0 && hy == ty) || (hx == tx && hy == ty + pos.1) {
+                return true;
+            }
         }
 
-        // off by 1 - covers all diagonal conditions
-        if (hx == tx + 1 && hy == ty + 1)
-            || (hx == tx - 1 && hy == ty - 1)
-            || (hx == tx + 1 && hy == ty - 1)
-            || (hx == tx - 1 && hy == ty + 1)
-        {
-            return true;
+        for pos in &self.diagonal_constants {
+            if hx == tx + pos.0 && hy == ty + pos.1 {
+                return true;
+            }
         }
 
         return false;
