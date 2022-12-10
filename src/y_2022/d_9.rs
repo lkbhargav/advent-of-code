@@ -141,11 +141,8 @@ impl Day9 {
     }
 
     pub fn update_tail_position(&self, head_pos: (i32, i32), tail_pos: (i32, i32)) -> (i32, i32) {
-        let hx = head_pos.0;
-        let hy = head_pos.1;
-
-        let mut tx = tail_pos.0;
-        let mut ty = tail_pos.1;
+        let (hx, hy) = head_pos;
+        let (mut tx, mut ty) = tail_pos;
 
         if self.is_touching(head_pos, tail_pos) {
             return (tx, ty);
@@ -184,10 +181,8 @@ impl Day9 {
     }
 
     pub fn is_touching(&self, head_pos: (i32, i32), tail_pos: (i32, i32)) -> bool {
-        let hx = head_pos.0;
-        let hy = head_pos.1;
-        let tx = tail_pos.0;
-        let ty = tail_pos.1;
+        let (hx, hy) = head_pos;
+        let (tx, ty) = tail_pos;
 
         // same position
         if hx == tx && hy == ty {
