@@ -57,11 +57,7 @@ impl Questions for Day8 {
         for v in &self.inp {
             code_data += v.len();
 
-            println!("{v}");
-
             newly_encoded_data += v.len() + 2 + v.matches("\\").count() + v.matches("\"").count();
-
-            println!("{newly_encoded_data}");
         }
 
         let res = newly_encoded_data - code_data;

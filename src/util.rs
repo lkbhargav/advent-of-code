@@ -85,12 +85,21 @@ impl<'a> RegexCaptures<'a> {
     }
 }
 
-pub fn regex_parser<'a>(pattern: &str, text_to_parse: &'a str) -> RegexCaptures<'a> {
-    let pattern = Regex::new(pattern).expect("error trying to fetch the pattern");
+pub struct RegexParser {
+    pattern: Regex,
+}
 
-    let captures = pattern
-        .captures(text_to_parse)
-        .expect("error fetching captures");
+impl RegexParser {
+    pub fn new(pattern: &str) -> Self {
+        let pattern = Regex::new(pattern).expect(
+            format!("error initializing regex parser with the given pattern - {pattern}").as_str(),
+        );
+        Self { pattern }
+    }
 
-    RegexCaptures::new(captures)
+    pub fn parse<'a>(&self, txt: &'a str) -> RegexCaptures<'a> {
+        let captures = self.pattern.captures(txt).expect("error fetching captures");
+
+        RegexCaptures::new(captures)
+    }
 }

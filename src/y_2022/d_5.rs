@@ -32,10 +32,14 @@ impl Questions for Day5 {
         let initial_values = vals[0];
         let instructions = vals[1];
 
+        let crates_regex_parser = RegexParser::new(r#"\d -> (?P<vals>[A-Z]+)"#);
+        let instructions_regex_parser =
+            RegexParser::new(r#"move (?P<count>\d+) from (?P<from>\d+) to (?P<to>\d+)"#);
+
         for line in initial_values.lines() {
             let mut vec = vec![];
 
-            let vals = regex_parser(r#"\d -> (?P<vals>[A-Z]+)"#, line).get_name("vals");
+            let vals = crates_regex_parser.parse(line).get_name("vals");
 
             for c in vals.chars() {
                 vec.push(c);
@@ -45,10 +49,7 @@ impl Questions for Day5 {
         }
 
         for line in instructions.lines() {
-            let repa = regex_parser(
-                r#"move (?P<count>\d+) from (?P<from>\d+) to (?P<to>\d+)"#,
-                line,
-            );
+            let repa = instructions_regex_parser.parse(line);
 
             let count: u16 = repa.get_name_usize("count") as u16;
             let from: u16 = repa.get_name_usize("from") as u16 - 1;

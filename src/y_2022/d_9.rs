@@ -126,6 +126,7 @@ impl Questions for Day9 {
 
 impl Day9 {
     pub fn new() -> Day9 {
+        // these constant values when added to `x` and `y` coords will give us the diagonals of that position
         let diagonal_constants = vec![(1, 1), (1, -1), (-1, 1), (-1, -1)];
         Day9 {
             inp: vec![],

@@ -47,9 +47,11 @@ impl Questions for Day9 {
 
         let mut unique_cities = HashSet::new();
 
+        let regex_parser =
+            RegexParser::new(r#"(?P<citya>\w+) to (?P<cityb>\w+) = (?P<distance>\d+)"#);
+
         contents.lines().filter(|f| !f.is_empty()).for_each(|v| {
-            let captures =
-                regex_parser(r#"(?P<citya>\w+) to (?P<cityb>\w+) = (?P<distance>\d+)"#, v);
+            let captures = regex_parser.parse(v);
 
             let citya = captures.get_name("citya");
             let cityb = captures.get_name("cityb");

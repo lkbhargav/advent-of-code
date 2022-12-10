@@ -59,24 +59,31 @@ impl Questions for Day6 {
         const START_NAME: &str = "start";
         const END_NAME: &str = "end";
 
-        self.inp = contents.lines().filter(|f| !f.is_empty()).map(|v| {
-            let captures = regex_parser(format!("(?P<{OPERATION_NAME}>turn off|turn on|toggle) (?P<{START_NAME}>\\d+,\\d+) through (?P<{END_NAME}>\\d+,\\d+)").as_str(), v);
-            
-            let operation = captures.get_name(OPERATION_NAME);
-            let operation = Operation::parse(operation.as_str()).expect("error parsing string to operation");
+        let regex_parser = RegexParser::new(format!("(?P<{OPERATION_NAME}>turn off|turn on|toggle) (?P<{START_NAME}>\\d+,\\d+) through (?P<{END_NAME}>\\d+,\\d+)").as_str());
 
-            let start = captures.get_name(START_NAME);
-            let start = Coord::parse(start.as_str()).expect("error parsing start coord");
+        self.inp = contents
+            .lines()
+            .filter(|f| !f.is_empty())
+            .map(|v| {
+                let captures = regex_parser.parse(v);
 
-            let end = captures.get_name(END_NAME);
-            let end = Coord::parse(end.as_str()).expect("error parsing end coord");
+                let operation = captures.get_name(OPERATION_NAME);
+                let operation = Operation::parse(operation.as_str())
+                    .expect("error parsing string to operation");
 
-            Instruction{
-                operation,
-                start,
-                end,
-            }
-        }).collect();
+                let start = captures.get_name(START_NAME);
+                let start = Coord::parse(start.as_str()).expect("error parsing start coord");
+
+                let end = captures.get_name(END_NAME);
+                let end = Coord::parse(end.as_str()).expect("error parsing end coord");
+
+                Instruction {
+                    operation,
+                    start,
+                    end,
+                }
+            })
+            .collect();
 
         Ok(())
     }
@@ -94,7 +101,7 @@ impl Questions for Day6 {
     }
 
     fn question_two(&mut self) -> Result<String, Box<dyn std::error::Error>> {
-        // reinitialize or we will get an error since we are using the 
+        // reinitialize or we will get an error since we are using the
         self.lights = vec![vec![0; 1000]; 1000];
 
         self.inp.clone().into_iter().for_each(|instruction| {
@@ -111,14 +118,18 @@ impl Questions for Day6 {
 
 impl Day6 {
     pub fn new() -> Day6 {
-        Day6 { inp: vec![], lights: vec![vec![0; 1000]; 1000]}
+        Day6 {
+            inp: vec![],
+            lights: vec![vec![0; 1000]; 1000],
+        }
     }
 
     pub fn follow_instruction_q1(&mut self, instruction: Instruction) {
         for row in 0..self.lights.len() {
             for column in 0..self.lights[row].len() {
-                if (row >= instruction.start.0 && row <= instruction.end.0) 
-                && (column >= instruction.start.1 && column <= instruction.end.1){
+                if (row >= instruction.start.0 && row <= instruction.end.0)
+                    && (column >= instruction.start.1 && column <= instruction.end.1)
+                {
                     match instruction.operation {
                         Operation::TurnOn => self.lights[row][column] = 1,
                         Operation::TurnOff => self.lights[row][column] = 0,
@@ -131,26 +142,27 @@ impl Day6 {
                         }
                     }
                 }
-            } 
+            }
         }
     }
 
     pub fn follow_instruction_q2(&mut self, instruction: Instruction) {
         for row in 0..self.lights.len() {
             for column in 0..self.lights[row].len() {
-                if (row >= instruction.start.0 && row <= instruction.end.0) 
-                && (column >= instruction.start.1 && column <= instruction.end.1){
+                if (row >= instruction.start.0 && row <= instruction.end.0)
+                    && (column >= instruction.start.1 && column <= instruction.end.1)
+                {
                     match instruction.operation {
                         Operation::TurnOn => self.lights[row][column] += 1,
                         Operation::TurnOff => {
                             if self.lights[row][column] > 0 {
                                 self.lights[row][column] -= 1;
                             }
-                        },
+                        }
                         Operation::Toggle => self.lights[row][column] += 2,
                     }
                 }
-            } 
+            }
         }
     }
 
@@ -160,7 +172,7 @@ impl Day6 {
         for row in 0..self.lights.len() {
             for column in 0..self.lights[row].len() {
                 count += self.lights[row][column];
-            } 
+            }
         }
 
         count

@@ -8,7 +8,7 @@ pub mod prelude {
     pub use crate::traits::Questions;
     pub use crate::types::QuestionNumber;
     pub use crate::util::{
-        confirm, prompt, prompt_select, prompt_with_validation, read_from_file, regex_parser,
+        confirm, prompt, prompt_select, prompt_with_validation, read_from_file, RegexParser,
     };
     pub use colored::Colorize;
 }

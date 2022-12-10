@@ -127,14 +127,13 @@ impl Questions for Day7 {
     fn init(&mut self, file: &str) -> Result<(), Box<dyn std::error::Error>> {
         let contents = read_from_file(file);
 
+        let regex_parser = RegexParser::new(r#"(?P<input>[a-zA-Z0-9| ]+) -> (?P<output>\w+)"#);
+
         contents
             .lines()
             .filter(|f| !f.is_empty())
             .for_each(|instruction| {
-                let captures = regex_parser(
-                    r#"(?P<input>[a-zA-Z0-9| ]+) -> (?P<output>\w+)"#,
-                    instruction,
-                );
+                let captures = regex_parser.parse(instruction);
 
                 let input = captures.get_name("input");
                 let output = captures.get_name("output");
