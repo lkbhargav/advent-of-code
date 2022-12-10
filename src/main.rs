@@ -8,6 +8,7 @@ use advent_of_code::{
     y_2022::{
         d_1::Day1 as y22d1, d_2::Day2 as y22d2, d_3::Day3 as y22d3, d_4::Day4 as y22d4,
         d_5::Day5 as y22d5, d_6::Day6 as y22d6, d_7::Day7 as y22d7, d_8::Day8 as y22d8,
+        d_9::Day9 as y22d9,
     },
 };
 
@@ -55,6 +56,7 @@ fn main() {
         Box::new(y22d6::new()),
         Box::new(y22d7::new()),
         Box::new(y22d8::new()),
+        Box::new(y22d9::new()),
     ];
 
     let mut problem: &mut dyn Questions = y22[0].as_mut();
