@@ -22,6 +22,9 @@ fn run(q: &mut dyn Questions, question_number: QuestionNumber) {
 }
 
 fn main() {
+    let title = "Advent of code!";
+    println!("{}", title.yellow().bold());
+
     let years = vec![2015, 2022];
     let year = prompt_select("Select the year", &years);
     let day = prompt("Type in the problem number", "1")
