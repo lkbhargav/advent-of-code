@@ -158,7 +158,7 @@ impl Questions for Day7 {
         // sorting it descending order
         v.sort_by(|a, b| b.partial_cmp(a).unwrap());
 
-        let mut smallest: usize = 10_000_000_000;
+        let mut smallest: usize = 100_000_000;
 
         for i in v {
             if i + available_space >= required_space {

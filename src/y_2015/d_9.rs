@@ -70,7 +70,7 @@ impl Questions for Day9 {
     }
 
     fn question_one(&mut self) -> Result<String, Box<dyn std::error::Error>> {
-        let mut min = 100_000_000_000;
+        let mut min = 100_000_000;
 
         for result in self.run() {
             let mut distance = 0;
