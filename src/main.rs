@@ -1,3 +1,5 @@
+use std::time::Instant;
+
 use advent_of_code::{
     prelude::*,
     y_2015::{
@@ -6,9 +8,9 @@ use advent_of_code::{
         d_6::Day6 as y15d6, d_7::Day7 as y15d7, d_8::Day8 as y15d8, d_9::Day9 as y15d9,
     },
     y_2022::{
-        d_1::Day1 as y22d1, d_10::Day10 as y22d10, d_2::Day2 as y22d2, d_3::Day3 as y22d3,
-        d_4::Day4 as y22d4, d_5::Day5 as y22d5, d_6::Day6 as y22d6, d_7::Day7 as y22d7,
-        d_8::Day8 as y22d8, d_9::Day9 as y22d9,
+        d_1::Day1 as y22d1, d_10::Day10 as y22d10, d_11::Day11 as y22d11, d_2::Day2 as y22d2,
+        d_3::Day3 as y22d3, d_4::Day4 as y22d4, d_5::Day5 as y22d5, d_6::Day6 as y22d6,
+        d_7::Day7 as y22d7, d_8::Day8 as y22d8, d_9::Day9 as y22d9,
     },
 };
 
@@ -61,6 +63,7 @@ fn main() {
         Box::new(y22d8::new()),
         Box::new(y22d9::new()),
         Box::new(y22d10::new()),
+        Box::new(y22d11::new(false)),
     ];
 
     let mut problem: &mut dyn Questions = y22[0].as_mut();
@@ -71,10 +74,19 @@ fn main() {
         _ => println!("Still not implemented"),
     }
 
+    let start = Instant::now();
+
     problem
         .init(file)
         .expect("error trying to initialize the problem");
 
+    println!("{}", start.elapsed().as_micros());
+
+    let start = Instant::now();
+
     run(problem, QuestionNumber::One);
+    println!("{}", start.elapsed().as_micros());
+    let start = Instant::now();
     run(problem, QuestionNumber::Two);
+    println!("{}", start.elapsed().as_micros());
 }
