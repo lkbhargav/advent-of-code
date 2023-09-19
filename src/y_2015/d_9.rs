@@ -60,8 +60,16 @@ impl Questions for Day9 {
             unique_cities.insert(citya.clone());
             unique_cities.insert(cityb.clone());
 
-            self.get_ready(citya.clone(), cityb.clone(), distance);
-            self.get_ready(cityb.clone(), citya.clone(), distance);
+            self.get_ready(
+                citya.clone().into_owned(),
+                cityb.clone().into_owned(),
+                distance,
+            );
+            self.get_ready(
+                cityb.into_owned().clone(),
+                citya.into_owned().clone(),
+                distance,
+            );
         });
 
         self.number_of_cities = unique_cities.len() as usize;

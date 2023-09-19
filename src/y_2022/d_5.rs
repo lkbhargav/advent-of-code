@@ -39,7 +39,9 @@ impl Questions for Day5 {
         for line in initial_values.lines() {
             let mut vec = vec![];
 
-            let vals = crates_regex_parser.parse(line).get_name("vals");
+            let regex_parser = crates_regex_parser.parse(line);
+
+            let vals = regex_parser.get_name("vals");
 
             for c in vals.chars() {
                 vec.push(c);

@@ -68,14 +68,14 @@ impl Questions for Day6 {
                 let captures = regex_parser.parse(v);
 
                 let operation = captures.get_name(OPERATION_NAME);
-                let operation = Operation::parse(operation.as_str())
-                    .expect("error parsing string to operation");
+                let operation =
+                    Operation::parse(&operation).expect("error parsing string to operation");
 
                 let start = captures.get_name(START_NAME);
-                let start = Coord::parse(start.as_str()).expect("error parsing start coord");
+                let start = Coord::parse(&start).expect("error parsing start coord");
 
                 let end = captures.get_name(END_NAME);
-                let end = Coord::parse(end.as_str()).expect("error parsing end coord");
+                let end = Coord::parse(&end).expect("error parsing end coord");
 
                 Instruction {
                     operation,

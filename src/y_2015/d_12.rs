@@ -12,7 +12,7 @@ impl Questions for Day12 {
     fn init(&mut self, file: &str) -> Result<(), Box<dyn std::error::Error>> {
         let contents = read_from_file(file);
 
-        self.inp = contents;
+        self.inp = contents.into_owned();
 
         Ok(())
     }

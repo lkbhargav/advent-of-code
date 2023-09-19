@@ -8,7 +8,7 @@ pub struct Password {
 }
 
 impl Password {
-    pub fn new(password: String) -> Self {
+    pub fn new(password: &str) -> Self {
         let password = password.chars().map(|c| c as u8).collect::<Vec<u8>>();
 
         let mut pass = Self {
@@ -87,7 +87,7 @@ impl Questions for Day11 {
     fn init(&mut self, file: &str) -> Result<(), Box<dyn std::error::Error>> {
         let contents = read_from_file(file);
 
-        self.inp = Password::new(contents);
+        self.inp = Password::new(&contents);
 
         Ok(())
     }
