@@ -119,7 +119,7 @@ mod tests {
 
         let mut day1 = Day1::new();
 
-        day1.init("inputs/2023/2a.txt")
+        day1.init("inputs/2023/1b.txt")
             .expect("error trying to init day1");
 
         let q2 = day1.question_two().unwrap();
