@@ -9,6 +9,7 @@ use advent_of_code::{
     },
     y_2016::d_1::Day1 as y16d1,
     y_2017::{d_1::Day1 as y17d1, d_2::Day2 as y17d2},
+    y_2018::d_1::Day1 as y18d1,
     y_2022::{
         d_1::Day1 as y22d1, d_10::Day10 as y22d10, d_11::Day11 as y22d11, d_2::Day2 as y22d2,
         d_3::Day3 as y22d3, d_4::Day4 as y22d4, d_5::Day5 as y22d5, d_6::Day6 as y22d6,
@@ -30,7 +31,7 @@ fn main() {
     let title = "Advent of code!";
     println!("{}", title.yellow().bold());
 
-    let years = vec![2015, 2016, 2017, 2022, 2023];
+    let years = vec![2015, 2016, 2017, 2018, 2022, 2023];
     let year = prompt_select("Select the year", &years);
     let day = prompt("Type in the problem number", "1")
         .parse::<usize>()
@@ -59,6 +60,8 @@ fn main() {
 
     let mut y17: Vec<Box<dyn Questions>> = vec![Box::new(y17d1::new()), Box::new(y17d2::new())];
 
+    let mut y18: Vec<Box<dyn Questions>> = vec![Box::new(y18d1::new())];
+
     let mut y22: Vec<Box<dyn Questions>> = vec![
         Box::new(y22d1::new()),
         Box::new(y22d2::new()),
@@ -81,6 +84,7 @@ fn main() {
         2015 => problem = y15[day - 1].as_mut(),
         2016 => problem = y16[day - 1].as_mut(),
         2017 => problem = y17[day - 1].as_mut(),
+        2018 => problem = y18[day - 1].as_mut(),
         2022 => problem = y22[day - 1].as_mut(),
         2023 => problem = y23[day - 1].as_mut(),
         _ => println!("Still not implemented"),
