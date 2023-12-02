@@ -45,7 +45,7 @@ impl Questions for Day12 {
 
         let ans = total_value.to_string();
 
-        println!("\nAnswer to first question is {}\n", ans.green());
+        println!("\nAnswer to 1st question: {}\n", ans.green().bold());
 
         Ok(ans)
     }
@@ -58,7 +58,7 @@ impl Questions for Day12 {
 
         let ans = val.to_string();
 
-        println!("\nAnswer to second question is {}\n", ans.green());
+        println!("\nAnswer to 2nd question: {}\n", ans.green().bold());
 
         Ok(ans)
     }

@@ -92,13 +92,29 @@ fn main() {
         .init(file)
         .expect("error trying to initialize the problem");
 
-    println!("{}", start.elapsed().as_micros());
+    let msg = format!(
+        "Initialization (consuming and parsing file - y{}|d{}) => {} µs",
+        years[year],
+        day,
+        start.elapsed().as_micros()
+    );
+
+    println!("{}", msg.blue().bold());
 
     let start = Instant::now();
 
     run(problem, QuestionNumber::One);
-    println!("{}", start.elapsed().as_micros());
+    let msg = format!(
+        "Time taken for 1st question: {} µs",
+        start.elapsed().as_micros()
+    );
+    println!("{}", msg.blue().bold());
+
     let start = Instant::now();
     run(problem, QuestionNumber::Two);
-    println!("{}", start.elapsed().as_micros());
+    let msg = format!(
+        "Time taken for 2nd question: {} µs",
+        start.elapsed().as_micros()
+    );
+    println!("{}", msg.blue().bold());
 }

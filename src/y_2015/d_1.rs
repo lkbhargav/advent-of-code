@@ -8,7 +8,7 @@ impl Questions for Day1 {
     fn question_one(&mut self) -> Result<String, Box<dyn std::error::Error>> {
         let ans = (&self.inp.iter().sum::<i32>()).to_string();
 
-        println!("\nAnswer to first question is {}\n", ans.green());
+        println!("\nAnswer to 1st question: {}\n", ans.green().bold());
 
         Ok(ans)
     }
@@ -27,7 +27,7 @@ impl Questions for Day1 {
             }
         }
 
-        println!("\nAnswer to second question is {}\n", ans.green());
+        println!("\nAnswer to 2nd question: {}\n", ans.green().bold());
 
         Ok(ans)
     }
