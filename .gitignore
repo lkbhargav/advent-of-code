@@ -1,2 +1,4 @@
 /target
 .vscode
+.debug
+.DS_Store

@@ -1,10 +1,10 @@
 use crate::prelude::*;
-use std::collections::HashSet;
+use std::{collections::HashSet, usize};
 
 #[derive(Debug)]
 pub struct Day12 {
-    start: (i32, i32),
-    end: (i32, i32),
+    start: (u32, u32),
+    end: (u32, u32),
     map: Vec<Vec<u8>>,
     adjacent_locs: Vec<(i32, i32)>,
 }
@@ -32,18 +32,18 @@ impl Questions for Day12 {
                 let char = c as u8;
 
                 if char == start_point {
-                    self.start = (idx as i32, idy as i32);
+                    self.start = (idx as u32, idy as u32);
+                    tmp.push('a' as u8);
                 } else if char == end_point {
-                    self.end = (idx as i32, idy as i32);
+                    self.end = (idx as u32, idy as u32);
+                    tmp.push('z' as u8);
+                } else {
+                    tmp.push(char);
                 }
-
-                tmp.push(char);
             }
 
             self.map.push(tmp);
         }
-
-        dbg!(self.map.clone());
 
         Ok(())
     }
@@ -51,7 +51,7 @@ impl Questions for Day12 {
     fn question_one(&mut self) -> Result<String, Box<dyn std::error::Error>> {
         // let pq = PriorityQueue::new();
 
-        let ans = self.find_path(self.start, 0, HashSet::new());
+        let ans = self.find_shortest_path(self.start);
 
         let ans = ans.to_string();
 
@@ -61,9 +61,20 @@ impl Questions for Day12 {
     }
 
     fn question_two(&mut self) -> Result<String, Box<dyn std::error::Error>> {
-        // TODO: your logic goes in here...
+        let mut shortest_path = u32::MAX;
 
-        let ans = "na".to_string();
+        for (idx, row) in self.map.iter().enumerate() {
+            for (idy, val) in row.iter().enumerate() {
+                if *val == 97 {
+                    let res = self.find_shortest_path((idx as u32, idy as u32));
+                    if res < shortest_path && res > 0 {
+                        shortest_path = res;
+                    }
+                }
+            }
+        }
+
+        let ans = shortest_path.to_string();
 
         println!("\nAnswer to 2nd question: {}\n", ans.green().bold());
 
@@ -81,47 +92,55 @@ impl Day12 {
         }
     }
 
-    pub fn find_path(
-        &self,
-        next_pos: (i32, i32),
-        count: usize,
-        already_visited: HashSet<(i32, i32)>,
-    ) -> usize {
-        let nx = next_pos.0;
-        let ny = next_pos.1;
+    fn find_shortest_path(&self, start_loc: (u32, u32)) -> u32 {
+        let mut queue = Vec::new();
+        let mut visited = HashSet::new();
 
-        let mut already_visited = already_visited;
-        let mut count = count;
+        let row_len = self.map.len() as i32;
+        let col_len = self.map.first().expect("don't see any columns").len() as i32;
 
-        for np in &self.adjacent_locs {
-            let new_x = nx + np.0;
-            let new_y = ny + np.1;
+        queue.push((start_loc, 0));
 
-            let new_loc = (new_x, new_y);
+        while queue.len() > 0 {
+            let q_val = queue.remove(0);
 
-            if new_x < 0 || new_y < 0 || already_visited.contains(&new_loc) {
+            let q_val_pos = q_val.0;
+
+            if visited.contains(&q_val_pos) {
                 continue;
             }
 
-            let mut val = self.map[nx as usize][ny as usize];
+            visited.insert(q_val_pos);
 
-            if val == 'S' as u8 {
-                val = 'a' as u8;
-            }
+            for al in &self.adjacent_locs {
+                if q_val_pos.0 as i32 + al.0 >= 0
+                    && q_val_pos.0 as i32 + al.0 < row_len
+                    && q_val_pos.1 as i32 + al.1 >= 0
+                    && q_val_pos.1 as i32 + al.1 < col_len
+                {
+                    let updated_val = self.map[(q_val_pos.0 as i32 + al.0) as usize]
+                        [(q_val_pos.1 as i32 + al.1) as usize];
+                    let val = self.map[q_val_pos.0 as usize][q_val_pos.1 as usize];
 
-            if new_loc == self.end {
-                return count;
-            }
+                    let new_pos = (
+                        (q_val_pos.0 as i32 + al.0) as u32,
+                        (q_val_pos.1 as i32 + al.1) as u32,
+                    );
 
-            let new_val = self.map[new_x as usize][new_y as usize];
+                    if updated_val >= val && updated_val - val <= 1 || updated_val < val {
+                        if self.end == new_pos {
+                            return q_val.1 + 1;
+                        }
 
-            if val == new_val + 1 || val == new_val {
-                already_visited.insert(new_loc);
-                count = self.find_path(new_loc, count + 1, already_visited.clone());
+                        // println!("{:?} -> {:?} ({})", q_val_pos, new_pos, q_val.1 + 1);
+
+                        queue.push((new_pos, q_val.1 + 1));
+                    }
+                }
             }
         }
 
-        count
+        0
     }
 }
 
@@ -146,7 +165,7 @@ mod tests {
 
     #[test]
     fn q2_works() {
-        let expected_q2 = String::from("na");
+        let expected_q2 = String::from("29");
 
         let mut day12 = Day12::new();
 

@@ -118,8 +118,8 @@ impl Questions for Day1 {
         // -1 => left | 1 => right | -2 => south | 2 => north
         let mut d = 2; // initial direction will be north
 
-        let mut prev_x = 0;
-        let mut prev_y = 0;
+        let mut prev_x;
+        let mut prev_y;
 
         let mut set = HashSet::new();
 
