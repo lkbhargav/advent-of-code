@@ -2,7 +2,6 @@ use crate::prelude::*;
 
 pub struct Day10 {
     inp: Vec<char>,
-    is_test: bool,
     iteration_count: usize,
     file_name: String,
     q2_iteration_count: usize,
@@ -21,8 +20,6 @@ impl Questions for Day10 {
     }
 
     fn question_one(&mut self) -> Result<String, Box<dyn std::error::Error>> {
-        dbg!(self.is_test);
-
         self.run(self.iteration_count);
 
         let ans = self.inp.len().to_string();
@@ -59,7 +56,6 @@ impl Day10 {
 
         Day10 {
             inp: vec![],
-            is_test,
             iteration_count,
             file_name: file_name.to_string(),
             q2_iteration_count: 50,

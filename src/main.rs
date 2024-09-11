@@ -7,7 +7,7 @@ use advent_of_code::{
         d_2::Day2 as y15d2, d_3::Day3 as y15d3, d_4::Day4 as y15d4, d_5::Day5 as y15d5,
         d_6::Day6 as y15d6, d_7::Day7 as y15d7, d_8::Day8 as y15d8, d_9::Day9 as y15d9,
     },
-    y_2016::d_1::Day1 as y16d1,
+    y_2016::{d_1::Day1 as y16d1, d_2::Day2 as y16d2},
     y_2017::{d_1::Day1 as y17d1, d_2::Day2 as y17d2},
     y_2018::{d_1::Day1 as y18d1, d_2::Day2 as y18d2, d_3::Day3 as y18d3},
     y_2022::{
@@ -56,7 +56,7 @@ fn main() {
         Box::new(y15d12::new()),
     ];
 
-    let mut y16: Vec<Box<dyn Questions>> = vec![Box::new(y16d1::new())];
+    let mut y16: Vec<Box<dyn Questions>> = vec![Box::new(y16d1::new()), Box::new(y16d2::new())];
 
     let mut y17: Vec<Box<dyn Questions>> = vec![Box::new(y17d1::new()), Box::new(y17d2::new())];
 

@@ -170,7 +170,6 @@ impl Questions for Day1 {
 
             for nx in prev_x..=x {
                 for ny in prev_y..=y {
-                    println!("{:?}", (nx, ny));
                     if set.contains(&(nx, ny)) {
                         x = nx;
                         y = ny;
@@ -181,8 +180,6 @@ impl Questions for Day1 {
                 }
             }
         }
-
-        dbg!(x, y);
 
         if x < 0 {
             x = 0 - x;
