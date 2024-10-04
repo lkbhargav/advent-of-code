@@ -5,7 +5,7 @@ gen:
 	
 .PHONY: run
 run:
-	cargo run --release
+	cargo run --release ${args}
 
 .PHONY: fmt
 fmt:
