@@ -26,6 +26,7 @@ use advent_of_code::{
         d_1::Day1 as y23d1, d_2::Day2 as y23d2, d_3::Day3 as y23d3, d_4::Day4 as y23d4,
         d_5::Day5 as y23d5,
     },
+    y_2024::d_1::Day1 as y24d1,
 };
 use clap::Parser;
 
@@ -60,7 +61,7 @@ fn main() {
 
     let args = Args::parse();
 
-    let years = vec![2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023];
+    let years = vec![2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024];
 
     if args.year.is_some() {
         year = args.year.unwrap();
@@ -149,6 +150,8 @@ fn main() {
         Box::new(y23d5::new()),
     ];
 
+    let mut y24: Vec<Box<dyn Questions>> = vec![Box::new(y24d1::new())];
+
     let mut problem: &mut dyn Questions = y22[0].as_mut();
 
     match year {
@@ -161,6 +164,7 @@ fn main() {
         2021 => problem = y21[day - 1].as_mut(),
         2022 => problem = y22[day - 1].as_mut(),
         2023 => problem = y23[day - 1].as_mut(),
+        2024 => problem = y24[day - 1].as_mut(),
         _ => println!("Still not implemented"),
     }
 

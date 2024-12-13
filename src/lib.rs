@@ -19,3 +19,4 @@ pub mod y_2018;
 pub mod y_2019;
 pub mod y_2020;
 pub mod y_2021;
+pub mod y_2024;
